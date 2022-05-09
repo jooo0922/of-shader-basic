@@ -10,7 +10,20 @@
   in/out 을 사용함으로써
   varying 변수를 사용하는 것과 동일한 효과를 볼 수 있음.
 */
-in vec4 fragCol;
+// in vec4 fragCol;
+
+/*
+  하나의 색상만을 사용해서 삼각형의 픽셀들을 색칠해줄 것이므로,
+  더 이상 위에서 처럼 이전 파이프라인인 버텍스셰이더에서 in 키워드로 보간된 색상값을 받아오지 않아도 됨.
+
+  대신 uniform 변수를 하나 만들어서, 
+  오픈프레임웍스의 ofShader.setUniform4f() 함수가 지정해주는 값을 
+  받아와서 모든 파이프라인과 픽셀들에 동일한 변수값으로 사용할 것임.
+
+  더 이상 무지개 삼각형을 그리지 않을 거니까
+  왜냐? 한 프레임 내에서 삼각형 메쉬의 모든 픽셀들을 다 동일한 색상으로 칠해줘도 되기 때문임!
+*/
+uniform vec4 uniCol;
 
 /*
   지금 out 키워드를 사용해서
@@ -31,5 +44,6 @@ out vec4 outColor;
 
 void main(){
   // outColor = vec4(1.0, 0.0, 0.0, 1.0);
-  outColor = fragCol;
+  // outColor = fragCol;
+  outColor = uniCol; // 이제 삼각형의 모든 픽셀들은 동일한 유니폼 변수에 할당된 색상값으로 칠해질거임.
 }

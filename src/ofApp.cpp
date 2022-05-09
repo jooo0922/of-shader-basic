@@ -46,6 +46,8 @@ void ofApp::setup(){
     triangle.addColor(ofFloatColor(0.0f, 1.0f, 0.0f, 1.0f));
     triangle.addColor(ofFloatColor(0.0f, 0.0f, 1.0f, 1.0f));
     
+    curColor = glm::vec4(0.0, 1.0, 1.0, 1.0); // 헤더파일에 선언한 curColor 변수의 초기값을 지정함 (유니폼 변수에다 쏴줄 값인데 keyPressed() 에서 값을 바꿔주려고 이런 식으로 구조를 짰음.)
+    
     /**
      ofShader 객체에게 bin/data 폴더에서 작성한 셰이더 파일들을 사용하도록
      해당 파일들을 .load() 함수로 불러오도록 함.
@@ -85,6 +87,29 @@ void ofApp::draw(){
      바인딩된 셰이더를 적용해서 화면에 렌더된다고 보면 됨,
      */
     shader.begin();
+    
+    /**
+     무지개 삼각형과 달리, 보간되지 않는 하나의 색상값을
+     삼각형 메쉬 전체에 적용하고 싶다면?
+     그리고 그 색깔이 사용자 키보드 입력에 따라 바뀌어야 한다면?
+     
+     -> 이럴 경우 셰이더에서는 하나의 색상값만을 사용하기 때문에
+     모든 버텍스 데이터에 색상값을 쏴주는 건 비효율적임.
+     
+     이럴 경우, 프래그먼트 셰이더에 uniform 변수를 생성해놓고,
+     해당 변수에 사용하고자 하는 색상값을 draw() 함수에서 바로 쏴주면 됨.
+     
+     이 때, 셰이더의 유니폼 변수에 값을 전송해줄 때 사용하는 ofShader 함수가
+     ofShader.setUniform4f() 임.
+     
+     뒤에 붙은 4f 는 셰이더에 만들어둔 유니폼 변수의 타입이 4개의 실수값을 받는 vec4 이기 때문에
+     저 함수를 사용한 것임.
+     
+     유니폼 변수 타입에 따라 setUniform3f(), setUniform3i() 등등
+     이런 식으로 사용해야 하는 함수가 다 다름.
+     */
+    // shader.setUniform4f("uniCol", glm::vec4(0, 1, 1, 1));
+    shader.setUniform4f("uniCol", curColor); // 헤더파일에 선언한 curColor를 그대로 가져와서 유니폼변수에 쏴주도록 수정함. (curColor 를 keyPressed 에서 수정해주려고 아렇게 함.)
     
     /**
      ofMesh 객체인 triangle에도 .draw() 함수가 따로 존재함.
@@ -144,6 +169,11 @@ void ofApp::keyPressed(int key){
     // setup() 함수에서 각 버텍스 위치 좌표값을 NDC 좌표계를 기준으로 변경해줬으니
     // 키 입력을 받을 때마다 마지막 버텍스를 x축 방향으로 빼주는 값 역시 NDC 좌표계를 기준으로 한 값만큼을 빼줘야겠지
     triangle.setVertex(2, curPos + glm::vec3(-0.1f, 0.0f, 0.0f));
+    
+    // key 입력을 받을 때마다 keyPressed() 함수가 호출되서
+    // curColor 의 r, g, b값을 각각 0.1, -0.1, -0.1 씩 더해서 변경해 줌.
+    // 변경된 curColor 값은 draw() 함수에서 setUniform4f() 함수에 의해 프래그먼트 셰이더의 uniform 변수로 전송될거임.
+    curColor = curColor + glm::vec4(0.1, -0.1, -0.1, 0.0);
 }
 
 //--------------------------------------------------------------

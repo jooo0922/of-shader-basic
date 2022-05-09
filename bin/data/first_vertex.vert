@@ -27,7 +27,7 @@
   라고 선언한 것과 같음.
 */
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec4 color;
+// layout(location = 1) in vec4 color; // 프래그먼트 셰이더에서 유니폼 변수를 사용해서 색상을 지정하므로, 더 이상 컬러값을 이전 파이프라인에서 받을 필요가 없지.
 
 /*
   버텍스마다 색상데이터를 받아왔으면,
@@ -42,9 +42,9 @@ layout(location = 1) in vec4 color;
   GPU가 두 변수를 연결해줄 수 있음. -> 아주 중요하므로 주의할 것!
   이거는 varying 변수를 사용할 때에도 마찬가지 사항임!
 */
-out vec4 fragCol;
+// out vec4 fragCol; // 프래그먼트 셰이더에서 유니폼 변수를 사용해서 색상을 지정하므로, 더 이상 컬러값을 다음 파이프라인으로 전달할 필요없음.
 
 void main() {
   gl_Position = vec4(position, 1.0);
-  fragCol = color;
+  // fragCol = color; // 프래그먼트 셰이더에서 유니폼 변수를 사용해서 색상을 지정하므로, 더 이상 컬러값을 다음 파이프라인으로 전달할 필요없음.
 }
