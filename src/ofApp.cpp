@@ -134,7 +134,11 @@ void ofApp::keyPressed(int key){
      */
     glm::vec3 curPos = triangle.getVertex(2); // 2번째 인덱스의 버텍스, 즉, 마지막에 추가한 버텍스를 가져와서 curPos 에 저장해 둠.
     // triangle.setVertex(2, curPos + glm::vec3(0, -20, 0)); // 저장해 둔 마지막 버텍스의 현재 좌표값인 curPos 에 (0, -20, 0)을 더해서, 즉 y축으로 -20씩 빼주면 이 버텍스가 어느 방향으로 움직이나 보려는 것.
-    triangle.setVertex(2, curPos + glm::vec3(-20, 0, 0)); // 이번에는 (-20, 0, 0) 을 더해서 x축으로 -20씩 빼줘서 버텍스가 어디루 가나 보려는 것.
+    // triangle.setVertex(2, curPos + glm::vec3(-20, 0, 0)); // 이번에는 (-20, 0, 0) 을 더해서 x축으로 -20씩 빼줘서 버텍스가 어디루 가나 보려는 것.
+    
+    // setup() 함수에서 각 버텍스 위치 좌표값을 NDC 좌표계를 기준으로 변경해줬으니
+    // 키 입력을 받을 때마다 마지막 버텍스를 x축 방향으로 빼주는 값 역시 NDC 좌표계를 기준으로 한 값만큼을 빼줘야겠지
+    triangle.setVertex(2, curPos + glm::vec3(-0.1f, 0.0f, 0.0f));
 }
 
 //--------------------------------------------------------------
