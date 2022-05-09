@@ -41,6 +41,11 @@ void ofApp::setup(){
     triangle.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
     triangle.addVertex(glm::vec3(1.0f, -1.0f, 0.0f));
     
+    // 각 버텍스에 색상데이터를 새로 추가해 줌. -> 이걸 어려운 말로 '버텍스 속성(vertex attribute)을 추가한다'고 함
+    triangle.addColor(ofFloatColor(1.0f, 0.0f, 0.0f, 1.0f));
+    triangle.addColor(ofFloatColor(0.0f, 1.0f, 0.0f, 1.0f));
+    triangle.addColor(ofFloatColor(0.0f, 0.0f, 1.0f, 1.0f));
+    
     /**
      ofShader 객체에게 bin/data 폴더에서 작성한 셰이더 파일들을 사용하도록
      해당 파일들을 .load() 함수로 불러오도록 함.
